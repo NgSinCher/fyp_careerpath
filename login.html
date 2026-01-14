@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bazi AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container" style="max-width: 400px; padding-top: 100px;">
+        <div class="header">
+            <h1>Login</h1>
+            <p>Access your professional Bazi analysis</p>
+        </div>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+
+            <div class="input-group">
+                <div style="display:flex; justify-content:space-between;">
+                    <label>Password</label>
+                    <a href="forgot_password.html"
+                        style="font-size:0.85rem; color:var(--primary); text-decoration:none;">Forgot Password?</a>
+                </div>
+                <div style="position:relative;">
+                    <input type="password" id="password" placeholder="Enter your password">
+                    <span onclick="togglePW('password')"
+                        style="position:absolute; right:10px; top:12px; cursor:pointer;" title="Show/Hide">👁️</span>
+                </div>
+            </div>
+
+            <button onclick="login()" class="btn-primary">Sign In</button>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <p>New user? <a href="register.html" style="color: var(--primary);">Create Account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePW(id) {
+            const el = document.getElementById(id);
+            if (el.type === 'password') el.type = 'text';
+            else el.type = 'password';
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                alert('Login failed');
+            }
+        }
+    </script>
+</body>
+
+</html>

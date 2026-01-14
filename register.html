@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazi AI - Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container" style="max-width: 400px; padding-top: 100px;">
+        <div class="header">
+            <h1>Create Account</h1>
+            <p>Join the Bazi AI journey</p>
+        </div>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div style="position:relative;">
+                    <input type="password" id="password" placeholder="Create a password">
+                    <span onclick="togglePW('password')"
+                        style="position:absolute; right:10px; top:12px; cursor:pointer;" title="Show/Hide">👁️</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <div style="position:relative;">
+                    <input type="password" id="confirm_password" placeholder="Confirm password">
+                    <span onclick="togglePW('confirm_password')"
+                        style="position:absolute; right:10px; top:12px; cursor:pointer;" title="Show/Hide">👁️</span>
+                </div>
+            </div>
+
+            <button onclick="register()" class="btn-primary">Register</button>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <p>Already have an account? <a href="login.html" style="color: var(--primary);">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePW(id) {
+            const el = document.getElementById(id);
+            if (el.type === 'password') el.type = 'text';
+            else el.type = 'password';
+        }
+
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm_password').value;
+
+            if (!email.includes('@')) {
+                alert("Please enter a valid email address with '@'.");
+                return;
+            }
+            if (password !== confirm) {
+                alert("Passwords do not match!");
+                return;
+            }
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert('Account created! Please login.');
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                alert('Registration failed');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazi AI Professional</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="glass-bg"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Bazi AI Professional</h1>
+            <p>Destiny • 财富 • 职业 • 五行</p>
+            <div style="margin-top:15px;">
+                <button onclick="showHistory()"
+                    style="background:transparent; border:1px solid var(--accent); color:var(--accent); padding:6px 15px; border-radius:20px; cursor:pointer; margin-right:10px;">📜
+                    My History</button>
+                <button onclick="logout()"
+                    style="background:none; border:1px solid var(--primary); color:var(--primary); padding:6px 15px; border-radius:20px; cursor:pointer;">Logout</button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Col 1: Inputs & Profile -->
+            <div>
+                <div class="card">
+                    <h2>Input Profile</h2>
+
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" id="dob" style="color-scheme: dark;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time of Birth</label>
+                        <input type="time" id="tob" style="color-scheme: dark;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="gender">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Birth State (Malaysia)</label>
+                        <select id="state">
+                            <option value="Johor">Johor</option>
+                            <option value="Kedah">Kedah</option>
+                            <option value="Kelantan">Kelantan</option>
+                            <option value="Melaka">Melaka</option>
+                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                            <option value="Pahang">Pahang</option>
+                            <option value="Penang">Penang</option>
+                            <option value="Perak">Perak</option>
+                            <option value="Perlis">Perlis</option>
+                            <option value="Sabah">Sabah</option>
+                            <option value="Sarawak">Sarawak</option>
+                            <option value="Selangor">Selangor</option>
+                            <option value="Terengganu">Terengganu</option>
+                            <option value="Kuala Lumpur">Kuala Lumpur (FT)</option>
+                            <option value="Labuan">Labuan (FT)</option>
+                            <option value="Putrajaya">Putrajaya (FT)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calculate()" class="btn-primary">Analyze Destiny</button>
+                </div>
+
+                <!-- Bazi Pillars (Moved here for compact view) -->
+                <div class="card" id="pillarsCard" style="display:none; margin-top:20px;">
+                    <h2>Four Pillars (Ba Zi)</h2>
+                    <div class="pillar-grid" id="pillarsDisplay"></div>
+                </div>
+            </div>
+
+            <!-- Col 2: Visualization & Career -->
+            <div id="col2" style="display:none;">
+                <!-- Career Recommendations -->
+                <div class="card">
+                    <h2>Career Recommendations</h2>
+                    <p style="font-size:0.9rem; color:var(--text-muted);">Based on Real-world Billionaire Data</p>
+                    <div id="careerDisplay"></div>
+                </div>
+
+                <!-- Radar Chart -->
+                <div class="card" style="margin-top:20px;">
+                    <h2>Wealth Energy Radar</h2>
+                    <div id="radarChart" style="height:350px;"></div>
+                </div>
+
+                <!-- Match List -->
+                <div class="card" style="margin-top:20px;">
+                    <h2>Billionaire Archetypes</h2>
+                    <div id="matchDisplay"></div>
+                </div>
+            </div>
+
+            <!-- Col 3: AI Analysis -->
+            <div id="col3" style="display:none;">
+                <div class="card" style="height: 100%;">
+                    <h2>AI Expert Opinion</h2>
+                    <div id="aiContent" class="ai-content">
+                        <div class="loading">Waiting for data...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; backdrop-filter:blur(5px);">
+        <div
+            style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--bg-deep); border:1px solid var(--primary); padding:30px; border-radius:15px; width:500px; max-height:80vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 style="margin:0; color:var(--primary);">My History</h2>
+                <button onclick="closeHistory()"
+                    style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div id="historyList">Loading...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>
