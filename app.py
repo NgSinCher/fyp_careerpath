@@ -10,7 +10,7 @@ from config import DB_CONFIG
 # Register Auth
 from auth import auth_bp
 
-DEFAULT_API_KEY = "AIzaSyBUdc6fJBXleMR976c-LanAEtZZJHzQCqA"
+DEFAULT_API_KEY = " "
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 app.secret_key = 'SUPER_SECRET_KEY_FOR_DEMO' 
@@ -289,3 +289,4 @@ def load_record(record_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
